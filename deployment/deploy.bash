@@ -33,8 +33,9 @@ sudo cp ~/nodejs-pool/deployment/electroneum.service /lib/systemd/system/
 sudo useradd -m electroneumdaemon -d /home/electroneumdaemon
 BLOCKCHAIN_DOWNLOAD_DIR=$(sudo -u electroneumdaemon mktemp -d)
 sudo -u electroneumdaemon wget --limit-rate=50m -O $BLOCKCHAIN_DOWNLOAD_DIR/blockchain.raw http://61.14.237.206/blockchain.raw
-sudo -u electroneumdaemon mkdir data
-sudo -u electroneumdaemon /usr/local/src/electroneum/build/release/bin/electroneum-blockchain-import --input-file $BLOCKCHAIN_DOWNLOAD_DIR/blockchain.raw --batch-size 20000 --database lmdb#fastest --verify off --data-dir /home/electroneumdaemon/data
+sudo -u electroneumdaemon mkdir /usr/local/src/electroneum/build/release/bin/data
+sudo -u electroneumdaemon mount /dev/sdb /usr/local/src/electroneum/build/release/bin/data
+sudo -u electroneumdaemon /usr/local/src/electroneum/build/release/bin/electroneum-blockchain-import --input-file $BLOCKCHAIN_DOWNLOAD_DIR/blockchain.raw --batch-size 20000 --database lmdb#fastest --verify off --data-dir /usr/local/src/electroneum/build/release/bin/data
 sudo -u electroneumdaemon rm -rf $BLOCKCHAIN_DOWNLOAD_DIR
 sudo systemctl daemon-reload
 sudo systemctl enable electroneum
